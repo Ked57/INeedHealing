@@ -54,7 +54,7 @@ $(function() {
 	}
 
 	function addGeneratorception() {
-		var reqUnitNumber = 92 + globals.generatorceptionNumber * 108;
+		var reqUnitNumber = 92 + globals.generatorceptionNumber * 1128;
 		if (globals.unitNumber >= reqUnitNumber) {
 			++globals.generatorceptionNumber;
 			globals.unitNumber -= reqUnitNumber;
@@ -62,7 +62,7 @@ $(function() {
 	}
 
 	function updateReqGeneratorceptions() {
-		$(" #reqNbGenception ").text(92 + globals.generatorceptionNumber * 108);
+		$(" #reqNbGenception ").text(92 + globals.generatorceptionNumber * 1128);
 	}
 
 	function updateGeneratorceptions() {
@@ -103,6 +103,7 @@ $(function() {
 			globals.name = val;
 			$("#identified").show();
 			$("#notIdentified").hide();
+			$("#nameSpan").text(val);
 			identified = true;
 			$.get("http://localhost:8888/load", globals).done(function( data ) {
 			    if(data != null){
