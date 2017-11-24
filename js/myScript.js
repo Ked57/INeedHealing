@@ -1,5 +1,5 @@
 $(function() {
-
+	
 	/*Variables globales */
 	var globals = {
 		name : "",
@@ -8,6 +8,9 @@ $(function() {
 		boughGeneratorNumber : 0, // Pour différencier le nombre de générateurs achetés et possédés 
 		generatorceptionNumber : 0
 	};
+	
+	var identified = false;
+	
 
 	setInterval(function() {
 		update();
@@ -65,6 +68,11 @@ $(function() {
 	function updateGeneratorceptions() {
 		$(" #nbGenception ").text(globals.generatorceptionNumber);
 	}
+	
+	$("#identified").hide();
+	$("#identButton").click(function(){
+		play($("#name").val());
+	});
 
 	$(" #madamada ").click(function() {
 		addUnit();
@@ -83,12 +91,32 @@ $(function() {
 	}, 5000);//On sauvegarde toutes les 5 secondes
 
 	function save() {
-		var name = $("#name").val();
-		if (name != null) {
-			globals.name = name
+		if (identified) {
 			var json = JSON.stringify(globals);
 			console.log(json);
 			$.get("http://localhost:8888/save", globals);
+		}
+	}
+	
+	function play(val){
+		if(val != null){
+			globals.name = val;
+			$("#identified").show();
+			$("#notIdentified").hide();
+			identified = true;
+			$.get("http://localhost:8888/load", globals).done(function( data ) {
+			    if(data != null){
+			    	data = JSON.parse(data);
+			    	
+			    	globals.name = data.name;
+			    	globals.unitNumber =  parseInt(data.unitNumber);
+			    	globals.generatorNumber =  parseInt(data.generatorNumber);
+			    	globals.boughGeneratorNumber =  parseInt(data.boughGeneratorNumber);
+			    	globals.generatorceptionNumber =  parseInt(data.generatorceptionNumber);
+			    	
+			    	console.log(globals);
+			    }
+			  });
 		}
 	}
 });
